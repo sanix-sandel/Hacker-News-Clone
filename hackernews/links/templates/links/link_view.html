@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<h1><a>{{ link.title}}</a></h1>
+<p>submitted by: <b>{{ link.submitted_by.username }}</b></p>
+<p>submitted on: <b>{{ link.submitted_on }}</b></p>
+{% endblock %}

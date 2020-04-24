@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<nav>
+    <ul>
+        {% if request.user.is_authenticated %}
+            <li><a href="{% url "link_submit" %}">Submit New Link</a>
+            </li>
+            
+        {% else %}
+            <li><a href="{% url "login" %}">Login</a></li>
+            <li><a href="{% url "register" %}">Create New Account</a></li>
+        {% endif %}
+    </ul>
+</nav>    
+<p>Bon retour</p>
+{% for link in links %}
+    <h4><a href="{{ link.get_absolute_url }}">{{link.title}}</a></h4>
+    <p>{{link.url}}</p>
+{% endfor %}
+
+{% endblock %}    
