@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import LinkForm
+from .forms import LinkForm, CommentModelForm
 from .models import Link
 
 def home(request):
@@ -26,6 +26,19 @@ def link_submit(request):
 
 def link_view(request, id):
     link=get_object_or_404(Link, id=id)
-    return render(request, 'links/link_view.html', {'link':link})
+    comments=link.comments.all()
+    if request.method=='POST':
+        form=CommentModelForm(request.POST)
+        
+        if form.is_valid():
+            newc=form.save(commit=False)
+            newc.commented_on=link
+            newc.commented_by=request.user
+            
+            newc.save()
+    else:
+        form=CommentModelForm()
+    return render(request, 'links/link_view.html',
+                 {'link':link, 'form':form, 'comments':comments})
 
 # Create your views here.
